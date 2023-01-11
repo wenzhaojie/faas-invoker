@@ -4,6 +4,7 @@ import os
 import requests
 from multiprocessing.pool import Pool
 import subprocess
+import time
 
 class KnativeInvoker:
     def __init__(self, gateway_ip=None, gateway_port=None) -> None:
@@ -74,4 +75,16 @@ if __name__ == "__main__":
 
     response = my_invoker.hey_invoke_sync_function(namespace="default", function_name="helloworld-python", n_request=10,  data="123")
     print(response)
-    
+
+    data = {
+            "invoke_t": time.time(),  # 发出调用请求的时间戳
+            "timestamp": 1,  # 模拟请求调用的第几秒
+            "n_request": 3,  # 一秒调用有几个并发请求
+            "index": 0,  # 第几个并发请求
+            "input_data_key": "input_data_key",
+            "output_data_key": "output_data_key",
+            "handler": "matmul",
+        }
+
+    response = my_invoker.invoke_sync_function(namespace="faas-scaler", function_name="test-intra-parallelism", data=data)
+    print(response)
