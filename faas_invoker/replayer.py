@@ -38,7 +38,7 @@ class Replayer:
         result_dict_list = []
         while not res_queue.empty():
             res = res_queue.get()
-            print(f"type(res):{type(res)}")
+            # print(f"type(res):{type(res)}")
             res = [json.loads(item) for item in res]
             result_dict_list.extend(res)
 
