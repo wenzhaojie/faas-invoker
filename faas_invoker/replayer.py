@@ -93,5 +93,5 @@ if __name__ == "__main__":
     replayer.test_invoke_in_sec()
 
     # 测试 test_invoke_in_sec
-
+    replayer.test_trace_replayer()
 
