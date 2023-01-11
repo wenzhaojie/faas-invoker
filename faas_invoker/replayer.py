@@ -52,3 +52,8 @@ class Replayer:
         print(f"log_dict_list:{log_dict_list}")
 
 
+if __name__ == "__main__":
+    replayer = Replayer()
+    replayer.test_invoke_in_sec()
+
+
