@@ -50,6 +50,8 @@ class Replayer:
 
     def invoke_in_sec(self, res_queue, namespace="faas-scaler", function_name="test-intra-parallelism", handler="matmul", timestamp=0, n_request=1):
         input_obj = {
+            "function_name": function_name, # 调用的函数名称
+            "namespace": namespace, # 调用的函数命名空间
             "invoke_t": time.time(),  # 发出调用请求的时间戳
             "timestamp": timestamp,  # 模拟请求调用的第几秒
             "n_request": n_request,  # 一秒调用有几个并发请求
