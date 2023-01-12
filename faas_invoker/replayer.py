@@ -21,10 +21,14 @@ class Replayer:
             start_time = time.time()
             print(f"当前模拟调用第{timestamp}秒")
             n_request = invocation
-            p = mp.Process(target=self.invoke_in_sec,
-                                        args=(res_queue, namespace, function_name, handler, timestamp, n_request))
-            process_list.append(p)
-            p.start()
+            # 如果 n_request == 0，跳过调用
+            if n_request == 0:
+                pass
+            else:
+                p = mp.Process(target=self.invoke_in_sec,
+                                            args=(res_queue, namespace, function_name, handler, timestamp, n_request))
+                process_list.append(p)
+                p.start()
             end_time = time.time()
             send_time = end_time - start_time
             print(f"休息{1 - send_time}秒")
