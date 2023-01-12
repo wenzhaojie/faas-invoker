@@ -17,10 +17,10 @@ class Replayer:
 
         process_list = []
 
-        for timestamp in range(10):
+        for timestamp, invocation in enumerate(invocation_in_sec_list):
             start_time = time.time()
             print(f"当前模拟调用第{timestamp}秒")
-            n_request = 3
+            n_request = invocation
             p = mp.Process(target=self.invoke_in_sec,
                                         args=(res_queue, namespace, function_name, handler, timestamp, n_request))
             process_list.append(p)
@@ -38,7 +38,6 @@ class Replayer:
         result_dict_list = []
         while not res_queue.empty():
             res = res_queue.get()
-            # print(f"type(res):{type(res)}")
             res = [json.loads(item) for item in res]
             result_dict_list.extend(res)
 
