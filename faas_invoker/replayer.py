@@ -53,6 +53,7 @@ class Replayer:
 
         if is_save_csv:
             print("写入csv!")
+            os.makedirs(self.log_dir, exist_ok=True)
             date = str(datetime.now())
             filename = f"replayer_log_{date}.csv"
             log_path = os.path.join(self.log_dir, filename)
