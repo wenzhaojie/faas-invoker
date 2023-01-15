@@ -1,17 +1,21 @@
 import time
+from datetime import datetime
 import copy
 from knative import KnativeInvoker
 from multiprocessing import Manager
 import multiprocessing as mp
 import json
+import csv
+import os
 
 
 class Replayer:
-    def __init__(self, invoker=KnativeInvoker()):
+    def __init__(self, invoker=KnativeInvoker(), log_dir="./", ):
         self.invoker = invoker
+        self.log_dir = log_dir
         pass
 
-    def trace_replayer(self, namespace, function_name, handler, invocation_in_sec_list):
+    def trace_replayer(self, namespace, function_name, handler, invocation_in_sec_list, is_save_csv=False):
         m = Manager()
         res_queue = m.Queue()
 
@@ -47,6 +51,18 @@ class Replayer:
 
         print(f"log_dict_list:{result_dict_list}")
 
+        if is_save_csv:
+            print("写入csv!")
+            date = str(datetime.now())
+            filename = f"replayer_log_{date}.csv"
+            log_path = os.path.join(self.log_dir, filename)
+            with open(log_path, 'w', newline='') as csvfile:
+                fieldnames = list(result_dict_list[0].keys())
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(result_dict_list)
+
+        return result_dict_list
 
     def invoke_in_sec(self, res_queue, namespace="faas-scaler", function_name="test-intra-parallelism", handler="matmul", timestamp=0, n_request=1):
         input_obj = {
