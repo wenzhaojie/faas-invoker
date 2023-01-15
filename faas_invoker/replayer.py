@@ -106,12 +106,18 @@ class Replayer:
         print(f"log_dict_list:{log_dict_list}")
 
     def test_trace_replayer(self):
-        self.trace_replayer(namespace="faas-scaler", function_name="test-intra-parallelism", handler="matmul", invocation_in_sec_list=[1,0,0,5,0,0,0,1])
+        self.trace_replayer(
+            namespace="faas-scaler",
+            function_name="test-intra-parallelism",
+            handler="matmul",
+            invocation_in_sec_list=[1,0,0,5,0,0,0,1],
+            is_save_csv=True
+        )
 
 
 if __name__ == "__main__":
     replayer = Replayer()
-    replayer.test_invoke_in_sec()
+    # replayer.test_invoke_in_sec()
 
     # 测试 test_invoke_in_sec
     replayer.test_trace_replayer()
