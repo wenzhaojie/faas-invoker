@@ -10,7 +10,7 @@ import os
 
 
 class Replayer:
-    def __init__(self, invoker=KnativeInvoker(), log_dir="./", ):
+    def __init__(self, invoker=KnativeInvoker(), log_dir="./logs", ):
         self.invoker = invoker
         self.log_dir = log_dir
         pass
