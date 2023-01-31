@@ -7,6 +7,7 @@ import subprocess
 import time
 
 class KnativeInvoker:
+    # 用于调用 Knative function
     def __init__(self, gateway_ip=None, gateway_port=None) -> None:
         if gateway_ip and gateway_port != None:
             self.gateway_ip = gateway_ip
@@ -62,6 +63,7 @@ class KnativeInvoker:
             cmd=cmd
         )
         return hey_output
+
 
 
 if __name__ == "__main__":
