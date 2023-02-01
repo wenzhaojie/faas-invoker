@@ -111,7 +111,7 @@ class Replayer:
             namespace="faas-scaler",
             function_name="test-intra-parallelism",
             handler="matmul",
-            invocation_in_sec_list=[1,0,0,5,0,0,0,1],
+            invocation_in_sec_list=[1,0,0,5,0,3,0,1,2,4,0,0,0,0,1,1,1,4,8,0,0,0,1],
             is_save_csv=True
         )
 
