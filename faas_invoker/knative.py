@@ -12,14 +12,15 @@ class KnativeInvoker:
         if gateway_ip and gateway_port != None:
             self.gateway_ip = gateway_ip
             self.gateway_port = gateway_port
-            self.prefix = prefix # 调用函数的规范路径
         else:
             self.init()
+        self.prefix = prefix  # 调用函数的规范路径
 
     def init(self):
         # 从环境变量中初始化
         self.gateway_ip = os.environ.get("GATEWAY_IP", "192.168.122.11")
         self.gateway_port = os.environ.get("GATEWAY_PORT", 31895)
+
 
     def invoke_sync_function(self, namespace="faas-scaler", function_name="helloworld-python", data=None):
         headers = {
