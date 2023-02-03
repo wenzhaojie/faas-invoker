@@ -99,19 +99,19 @@ class Replayer:
         self.invoke_in_sec(res_queue=res_queue, namespace="faas-scaler", function_name="test-intra-parallelism",handler="matmul", timestamp=0, n_request=3)
         # 展示结果保存
         print("从缓存队列中取结果!")
-        log_dict_list = []
+        data_dict_list = []
         while not res_queue.empty():
             res = res_queue.get()
-            log_dict_list.extend(res)
+            data_dict_list.extend(res)
 
-        print(f"log_dict_list:{log_dict_list}")
+        print(f"data_dict_list:{data_dict_list}")
 
     def test_trace_replayer(self):
         self.trace_replayer(
             namespace="faas-scaler",
             function_name="test-intra-parallelism",
             handler="matmul",
-            invocation_in_sec_list=[1,0,0,5,0,3,0,1,2,4,0,0,0,0,1,1,1,4,8,0,0,0,1],
+            invocation_in_sec_list=[1,0,0,5,0,3,0,1,2,4,0,0,0,0,1,1,1,4,4,0,0,0,1],
             is_save_csv=True
         )
 
