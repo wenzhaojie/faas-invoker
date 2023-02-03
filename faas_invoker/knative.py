@@ -8,10 +8,11 @@ import time
 
 class KnativeInvoker:
     # 用于调用 Knative function
-    def __init__(self, gateway_ip=None, gateway_port=None) -> None:
+    def __init__(self, gateway_ip=None, gateway_port=None, prefix="/function") -> None:
         if gateway_ip and gateway_port != None:
             self.gateway_ip = gateway_ip
             self.gateway_port = gateway_port
+            self.prefix = prefix # 调用函数的规范路径
         else:
             self.init()
 
@@ -24,7 +25,7 @@ class KnativeInvoker:
         headers = {
             "Host": f"{function_name}.{namespace}.example.com"
         }
-        url = "http://" + self.gateway_ip + ":" + str(self.gateway_port) + "/function"
+        url = "http://" + self.gateway_ip + ":" + str(self.gateway_port) + self.prefix
         response = requests.post(url, headers=headers, json=data)
         if str(response) == '<Response [200]>': # 成功调用了
             content = response.content.decode('utf-8')
@@ -38,9 +39,6 @@ class KnativeInvoker:
         data =args["data"]
         res = self.invoke_sync_function(namespace=namespace, function_name=function_name, data=data)
         return res
-
-    def mapping(self, namespace, function_name, data):
-        return f"{namespace}-{function_name}-{data}"
 
     def sync_map(self, namespace="faas-scaler", function_name="helloworld-python", data_list=None):
         if data_list is None:
