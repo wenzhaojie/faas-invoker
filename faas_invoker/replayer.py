@@ -115,11 +115,23 @@ class Replayer:
             is_save_csv=True
         )
 
+    def test_trace_replayer_custom_handler(self):
+        handler_name = input(__prompt="请输入handler_name")
+        self.trace_replayer(
+            namespace="faas-scaler",
+            function_name="test-intra-parallelism",
+            handler=handler_name,
+            invocation_in_sec_list=[1,0,0,5,0,0,0,1,2,0,0,0,4,0,1,1,1,4,4,0],
+            is_save_csv=True
+        )
+
+
 
 if __name__ == "__main__":
     replayer = Replayer()
     # replayer.test_invoke_in_sec()
 
     # 测试 test_invoke_in_sec
-    replayer.test_trace_replayer()
+    # replayer.test_trace_replayer()
+    replayer.test_trace_replayer_custom_handler()
 

@@ -1,6 +1,7 @@
 # 运行实验，用于实验测试，并画出主要的结果
 from pyplotter import plot
 import os
+from replayer import Replayer
 
 class Exp:
     def __init__(self, root_path="./results", exp_name="exp"):
@@ -14,6 +15,7 @@ class Exp:
 
     def config(self):
         # 用于配置实验的条件
+        self.replayer = Replayer()
         pass
 
     def start_replay(self):
