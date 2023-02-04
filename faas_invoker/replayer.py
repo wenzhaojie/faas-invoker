@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 import copy
-from knative import KnativeInvoker
+from faas_invoker.knative import KnativeInvoker
 from multiprocessing import Manager
 import multiprocessing as mp
 import json
