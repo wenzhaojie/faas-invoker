@@ -46,6 +46,7 @@ class Replayer:
         result_dict_list = []
         while not res_queue.empty():
             res = res_queue.get()
+            print(f"get from queue res: {res}")
             res = [json.loads(item) for item in res]
             result_dict_list.extend(res)
 
