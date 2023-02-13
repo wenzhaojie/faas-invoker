@@ -124,7 +124,7 @@ class Replayer:
         )
 
     def test_trace_replayer_custom_handler(self):
-        handler_name = input(__prompt="请输入handler_name")
+        handler_name = input("请输入handler_name")
         self.trace_replayer(
             namespace="faas-scaler",
             function_name="test-intra-parallelism",
