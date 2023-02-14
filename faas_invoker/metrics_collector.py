@@ -31,6 +31,7 @@ class Prometheus_collector:
     def get_by_metric_name(self, metric_name):
         pass
 
+
 # 从自己做的function runtime中获取metrics
 class Runtime_collector:
     def __init__(self) -> None:
@@ -43,7 +44,6 @@ class Runtime_collector:
         with open(csv_path, 'r', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-
                 input_obj = row.get("input_obj")
                 log_dict = row.get("log_dict")
                 result_dict = row.get("result_dict")
@@ -52,8 +52,10 @@ class Runtime_collector:
                 # json不规范需要replace修正
                 input_obj = json.loads(input_obj.replace("'", '"').replace("True", "true").replace("False", "false"))
                 log_dict = json.loads(log_dict.replace("'", '"').replace("True", "true").replace("False", "false"))
-                result_dict = json.loads(result_dict.replace("'", '"').replace("True", "true").replace("False", "false"))
-                resource_dict = json.loads(resource_dict.replace("'", '"').replace("True", "true").replace("False", "false"))
+                result_dict = json.loads(
+                    result_dict.replace("'", '"').replace("True", "true").replace("False", "false"))
+                resource_dict = json.loads(
+                    resource_dict.replace("'", '"').replace("True", "true").replace("False", "false"))
 
                 res_dict = {
                     "input_obj": input_obj,
@@ -64,6 +66,29 @@ class Runtime_collector:
                 data_dict_list.append(res_dict)
         return data_dict_list
 
+    def data_dict_list_filter(self, node_name_list=None, cpu_list=None, cold_start=None, data_dict_list=None) -> list:
+        # 对data_dict_list进行过滤
+        filtered_data_dict_list = []
+        for data_dict in data_dict_list:
+            input_obj = data_dict.get("input_obj")
+            log_dict = data_dict.get("log_dict")
+            result_dict = data_dict.get("result_dict")
+            resource_dict = data_dict.get("resource_dict")
+            # 分别针对指标进行筛选
+            if node_name_list is not None:
+                node_name = resource_dict.get("node_name")
+                if node_name not in node_name_list:
+                    continue
+            if cpu_list is not None:
+                cpu = resource_dict.get("cpu")
+                if cpu not in cpu_list:
+                    continue
+            if cold_start is not None:
+                cold_start_flag = log_dict.get("cold_start")
+                if cold_start_flag != cold_start:
+                    continue
+            filtered_data_dict_list.append(data_dict)
+        return filtered_data_dict_list
 
     def get_mapping_delay_time_series(self, data_dict_list):
         # 从result_dict_list中获取mapping_delay的时间序列
@@ -76,7 +101,7 @@ class Runtime_collector:
 
             mapping_delay = log_dict.get("mapping_delay")
             invoke_t = input_obj.get("invoke_t")
-            mapping_delay_tuple_list.append((invoke_t, mapping_delay)) # 用元组的第一个元素作为排序的依据
+            mapping_delay_tuple_list.append((invoke_t, mapping_delay))  # 用元组的第一个元素作为排序的依据
 
             # print(f"input_obj:{input_obj}")
             # print(f"log_dict:{log_dict}")
@@ -84,7 +109,7 @@ class Runtime_collector:
 
         # 对mapping_delay_tuple_list进行排序
         # print(f"mapping_delay_tuple_list:{mapping_delay_tuple_list}")
-        mapping_delay_tuple_list.sort(key=lambda x: x[0]) # 用元组的第一个元素作为排序的依据
+        mapping_delay_tuple_list.sort(key=lambda x: x[0])  # 用元组的第一个元素作为排序的依据
         # 用列表中的第二个元素生成新的列表
         mapping_delay_list = [x[1] for x in mapping_delay_tuple_list]
         return mapping_delay_list
@@ -120,7 +145,6 @@ class Runtime_collector:
         latency_time_list = [x[1] for x in latency_time_tuple_list]
         return latency_time_list
 
-
     def get_compute_time_series(self, data_dict_list):
         # 从data_dict_list中获取函数计算时间的时间序列
         compute_time_list = []
@@ -147,7 +171,6 @@ class Runtime_collector:
         compute_time_list = [x[1] for x in compute_time_tuple_list]
         return compute_time_list
 
-
     def get_cold_start_time_series(self, data_dict_list):
         # 从data_dict_list中获取函数冷启动的时间序列
         pass
@@ -169,7 +192,6 @@ class Runtime_collector:
             pod_name = resource_dict.get("hostname")
             node_name = resource_dict.get("nodename")
 
-
             location = {
                 "pod_name": pod_name,
                 "node_name": node_name,
@@ -189,8 +211,6 @@ class Runtime_collector:
         pass
 
 
-
-
 class Test_Runtime_collector:
     def __init__(self):
         pass
@@ -200,13 +220,11 @@ class Test_Runtime_collector:
         res = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         print(f"load_result_dict_list:{res}")
 
-
     def test_get_concurrency_time_series(self):
         my_runtime_collector = Runtime_collector()
         data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
         res = my_runtime_collector.get_mapping_delay_time_series(data_dict_list=data_dict_list[0:20])
         print(f"get_mapping_delay_time_series:{res}")
-
 
     def test_get_latency_time_series(self):
         my_runtime_collector = Runtime_collector()
@@ -220,15 +238,11 @@ class Test_Runtime_collector:
         res = my_runtime_collector.get_compute_time_series(data_dict_list=data_dict_list[0:20])
         print(f"get_compute_time_series:{res}")
 
-
     def test_get_scheduled_location_list(self):
         my_runtime_collector = Runtime_collector()
         data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
         res = my_runtime_collector.get_scheduled_location_list(data_dict_list=data_dict_list[0:20])
         print(f"get_scheduled_location_list:{res}")
-
-
-
 
 
 if __name__ == "__main__":
@@ -238,7 +252,3 @@ if __name__ == "__main__":
     # my_test.test_get_latency_time_series()
     # my_test.test_get_compute_time_series()
     my_test.test_get_scheduled_location_list()
-
-
-
-
