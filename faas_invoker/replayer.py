@@ -46,14 +46,14 @@ class Replayer:
         result_dict_list = []
         while not res_queue.empty():
             res = res_queue.get()
-            print(f"get from queue res: {res}")
+            # print(f"get from queue res: {res}")
             try:
                 res = [json.loads(item) for item in res]
                 result_dict_list.extend(res)
             except:
                 pass
 
-        print(f"log_dict_list:{result_dict_list}")
+        # print(f"log_dict_list:{result_dict_list}")
 
         if is_save_csv:
             print("写入csv!")
