@@ -222,33 +222,47 @@ class Test_Runtime_collector:
 
     def test_get_concurrency_time_series(self):
         my_runtime_collector = Runtime_collector()
-        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
+        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         res = my_runtime_collector.get_mapping_delay_time_series(data_dict_list=data_dict_list[0:20])
         print(f"get_mapping_delay_time_series:{res}")
 
     def test_get_latency_time_series(self):
         my_runtime_collector = Runtime_collector()
-        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
+        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         res = my_runtime_collector.get_latency_time_series(data_dict_list=data_dict_list[0:20])
         print(f"get_latency_time_series:{res}")
 
     def test_get_compute_time_series(self):
         my_runtime_collector = Runtime_collector()
-        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
+        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         res = my_runtime_collector.get_compute_time_series(data_dict_list=data_dict_list[0:20])
         print(f"get_compute_time_series:{res}")
 
     def test_get_scheduled_location_list(self):
         my_runtime_collector = Runtime_collector()
-        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example_20.csv")
+        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         res = my_runtime_collector.get_scheduled_location_list(data_dict_list=data_dict_list[0:20])
         print(f"get_scheduled_location_list:{res}")
+
+    def test_data_dict_list_filter(self):
+        my_runtime_collector = Runtime_collector()
+        data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
+        res = my_runtime_collector.data_dict_list_filter(
+            node_name_list=["k8s01","k8s02","k8s03","k8s04","k8s05","k8s06","k8s07","k8s08"],
+            cpu_list=None,
+            cold_start=True,
+            data_dict_list=data_dict_list
+        )
+        print(f"data_dict_list_filter:{res}")
+
 
 
 if __name__ == "__main__":
     my_test = Test_Runtime_collector()
     my_test.test_load_result_dict_list()
+
     # my_test.test_get_concurrency_time_series()
     # my_test.test_get_latency_time_series()
     # my_test.test_get_compute_time_series()
-    my_test.test_get_scheduled_location_list()
+    my_test.test_data_dict_list_filter()
+    # my_test.test_get_scheduled_location_list()
