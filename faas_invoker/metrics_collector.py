@@ -84,7 +84,7 @@ class Runtime_collector:
                 if cpu not in cpu_list:
                     continue
             if cold_start is not None:
-                cold_start_flag = log_dict.get("cold_start")
+                cold_start_flag = log_dict.get("COLD_START_FLAG")
                 if cold_start_flag != cold_start:
                     continue
             filtered_data_dict_list.append(data_dict)
@@ -249,7 +249,7 @@ class Test_Runtime_collector:
         data_dict_list = my_runtime_collector.load_data_dict_list(csv_path="logs/example.csv")
         res = my_runtime_collector.data_dict_list_filter(
             node_name_list=["k8s01","k8s02","k8s03","k8s04","k8s05","k8s06","k8s07","k8s08"],
-            cpu_list=None,
+            cpu_list=[2],
             cold_start=True,
             data_dict_list=data_dict_list
         )
