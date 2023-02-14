@@ -56,7 +56,6 @@ class Replayer:
         # print(f"log_dict_list:{result_dict_list}")
 
         if is_save_csv:
-            print("写入csv!")
             os.makedirs(self.log_dir, exist_ok=True)
             date = str(datetime.now())
             if save_name == None:
@@ -65,11 +64,13 @@ class Replayer:
                 save_name = save_name.split(".")[0] + f".csv"
 
             log_path = os.path.join(self.log_dir, save_name)
+
             with open(log_path, 'w', newline='') as csvfile:
                 fieldnames = list(result_dict_list[0].keys())
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(result_dict_list)
+            print(f"写入csv:{log_path}")
 
         return result_dict_list
 
