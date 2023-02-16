@@ -66,11 +66,16 @@ class Replayer:
             log_path = os.path.join(self.log_dir, save_name)
 
             with open(log_path, 'w', newline='') as csvfile:
-                fieldnames = list(result_dict_list[0].keys())
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(result_dict_list)
-            print(f"写入csv:{log_path}")
+                try:
+                    fieldnames = list(result_dict_list[0].keys())
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(result_dict_list)
+                    print(f"写入csv:{log_path}")
+                except Exception as e:
+                    print(f"写入csv出错:{e}")
+                    pass
+
 
         return result_dict_list
 
