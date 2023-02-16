@@ -74,6 +74,7 @@ class Replayer:
                     print(f"写入csv:{log_path}")
                 except Exception as e:
                     print(f"写入csv出错:{e}")
+                    print(f"result_dict_list:{result_dict_list}")
                     pass
 
 
