@@ -77,7 +77,6 @@ class Replayer:
                     print(f"result_dict_list:{result_dict_list}")
                     pass
 
-
         return result_dict_list
 
     def invoke_in_sec(self, res_queue, namespace="faas-scaler", function_name="test-intra-parallelism", handler="matmul", timestamp=0, n_request=1):
