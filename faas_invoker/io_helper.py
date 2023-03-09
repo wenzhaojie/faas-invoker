@@ -19,9 +19,7 @@ class S3:
                  S3_BUCKET_NAME=os.environ.get("S3_BUCKET_NAME")):
         self.s3_client = boto3.client(service_name='s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
                                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY, use_ssl=True)
-
         self.s3_bucket_name = S3_BUCKET_NAME
-
         self.s3_resource = boto3.Session(
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY
@@ -53,8 +51,10 @@ class S3:
         return t, 0
 
     def get_obj(self, obj_key):
+        print(f"s3_bucket_name: {self.s3_bucket_name}, obj_key: {obj_key}")
         begin = time.time()
-        pickle_byte_obj = self.s3_resource.Bucket(self.s3_bucket_name).Object(obj_key).get()['Body'].read()
+        pickle_byte_obj = self.s3_resource.Object(self.s3_bucket_name, obj_key).get()['Body'].read()
+        # pickle_byte_obj = self.s3_resource.Bucket(self.s3_bucket_name).Object(obj_key).get()['Body'].read()
         download_t = time.time() - begin
         begin = time.time()
         object = pickle.loads(pickle_byte_obj)
@@ -62,11 +62,13 @@ class S3:
         return object, download_t, pickle_t
 
     def put_obj(self, obj_key, obj):
+        print(f"s3_bucket_name: {self.s3_bucket_name}, obj_key: {obj_key}")
         begin = time.time()
         pickle_byte_obj = pickle.dumps(obj)
         pickle_t = time.time() - begin
         begin = time.time()
-        self.s3_resource.Bucket(self.s3_bucket_name).Object(obj_key).put(Body=pickle_byte_obj)
+        self.s3_resource.Object(self.s3_bucket_name, obj_key).put(Body=pickle_byte_obj)
+        # self.s3_resource.Bucket(self.s3_bucket_name).Object(obj_key).put(Body=pickle_byte_obj)
         t = time.time() - begin
         return t, pickle_t
 
@@ -143,6 +145,9 @@ class Redis:
 
 
 if __name__ == "__main__":
-    redis = Redis(host="127.0.0.1")
-    redis.put_obj("test", "test")
-    print(redis.get_obj("test"))
+
+    # redis = Redis(host="127.0.0.1")
+    # redis.put_obj("test", "test")
+
+    s3 = S3()
+    s3.put_obj("test", "test")
