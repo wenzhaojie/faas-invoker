@@ -21,13 +21,19 @@ class S3:
         AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY", None),
         S3_BUCKET_NAME=os.environ.get("S3_BUCKET_NAME", None)
     ):
-        self.s3_client = boto3.client(service_name='s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
+        # 如果环境变量中没有，则不填写
+        if AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY is None:
+            self.s3_client = boto3.client(service_name='s3', use_ssl=True)
+            self.s3_resource = boto3.Session().resource('s3')
+        else:
+            self.s3_client = boto3.client(service_name='s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
                                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY, use_ssl=True)
+            self.s3_resource = boto3.Session(
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+            ).resource('s3')
         self.s3_bucket_name = S3_BUCKET_NAME
-        self.s3_resource = boto3.Session(
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-        ).resource('s3')
+
 
     def get_file_io(self, file_key):
         bucket = self.s3_resource.Bucket(self.s3_bucket_name)
