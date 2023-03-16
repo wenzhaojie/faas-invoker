@@ -7,16 +7,20 @@ import time
 import os
 
 # 如果没有指定 aws_access_key_id, aws_secret_access_key, aws_session_token 则从环境变量中获取
-aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
-aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
-S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
-aws_session_token = os.environ.get("AWS_SESSION_TOKEN")
+aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID", None)
+aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY", None)
+S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", None)
+aws_session_token = os.environ.get("AWS_SESSION_TOKEN", None)
 region_name = os.environ.get("AWS_REGION_NAME", "us-east-1")
 
 
 class S3:
-    def __init__(self, AWS_ACCESS_KEY_ID=os.environ.get("AWS_ACCESS_KEY_ID"), AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY"),
-                 S3_BUCKET_NAME=os.environ.get("S3_BUCKET_NAME")):
+    def __init__(
+        self,
+        AWS_ACCESS_KEY_ID=os.environ.get("AWS_ACCESS_KEY_ID", None),
+        AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY", None),
+        S3_BUCKET_NAME=os.environ.get("S3_BUCKET_NAME", None)
+    ):
         self.s3_client = boto3.client(service_name='s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
                                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY, use_ssl=True)
         self.s3_bucket_name = S3_BUCKET_NAME
