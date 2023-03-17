@@ -29,6 +29,7 @@ class LambdaInvoker:
 
     @staticmethod
     def invoke_sync_function(namespace=None, function_name=None, data=None):
+        data = json.dumps(data)
         res = client.invoke(FunctionName=function_name, InvocationType='RequestResponse', Payload=data)
         return res['Payload'].read().decode('utf-8')
 
