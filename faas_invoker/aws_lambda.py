@@ -28,14 +28,15 @@ class LambdaInvoker:
         self.aws_session_token = aws_session_token
 
     @staticmethod
-    def invoke_sync_function(function_name, data=None):
+    def invoke_sync_function(namespace=None, function_name=None, data=None):
         res = client.invoke(FunctionName=function_name, InvocationType='RequestResponse', Payload=data)
         return res['Payload'].read().decode('utf-8')
 
     def invoke_sync_function_dict(self, args):
         function_name = args["function_name"]
         data = args["data"]
-        res = self.invoke_sync_function(function_name=function_name, data=data)
+        namespace = args["namespace"]
+        res = self.invoke_sync_function(namespace=namespace, function_name=function_name, data=data)
         return res
 
     def sync_map(self, namespace="faas-scaler", function_name="helloworld-python", data_list=None):

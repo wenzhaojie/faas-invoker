@@ -2,7 +2,7 @@
 from faas_invoker.knative import KnativeInvoker
 from faas_invoker.aws_lambda import LambdaInvoker
 
-class FaaSInvoker:
+class PlatformInvoker:
     def get_invoker(self, platform):
         if platform == "knative":
             return KnativeInvoker()
