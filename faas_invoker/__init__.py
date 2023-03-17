@@ -1,1 +1,0 @@
-from faas_invoker import faas_invoker
