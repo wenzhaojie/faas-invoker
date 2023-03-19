@@ -6,7 +6,7 @@ class PlatformInvoker:
     def get_invoker(self, platform):
         if platform == "knative":
             return KnativeInvoker()
-        elif platform == "lambda":
+        elif platform == "aws":
             return LambdaInvoker()
         else:
             raise Exception("Unknown platform: {}".format(platform))
