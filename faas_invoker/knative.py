@@ -28,7 +28,13 @@ class KnativeInvoker:
             "Host": f"{function_name}.{namespace}.example.com"
         }
         url = "http://" + self.gateway_ip + ":" + str(self.gateway_port) + self.prefix
-        response = requests.post(url, headers=headers, json=data, timeout=self.timeout)
+        try:
+            response = requests.post(url, headers=headers, json=data, timeout=self.timeout)
+        except Exception as e:
+            print(e)
+            # timeout
+            response = "<Response [404]>"
+
         if str(response) == '<Response [200]>': # 成功调用了
             content = response.content.decode('utf-8')
         else:
