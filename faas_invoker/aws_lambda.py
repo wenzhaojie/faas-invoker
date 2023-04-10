@@ -21,11 +21,12 @@ client = boto3.client(
 
 class LambdaInvoker:
     def __init__(self, region_name="us-east-1", aws_access_key_id=None, aws_secret_access_key=None,
-                 aws_session_token=None):
+                 aws_session_token=None, timeout=60):
         self.region_name = region_name
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
         self.aws_session_token = aws_session_token
+        self.timeout = timeout
 
     @staticmethod
     def invoke_sync_function(namespace=None, function_name=None, data=None):
