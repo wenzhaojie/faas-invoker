@@ -23,7 +23,7 @@ class KnativeInvoker:
         self.gateway_port = os.environ.get("GATEWAY_PORT", 31895)
 
 
-    def invoke_sync_function(self, namespace="faas-scaler", function_name="helloworld-python", data=None):
+    def invoke_sync_function(self, namespace="faas-scaler", function_name="helloworld-python", data=None) -> str:
         headers = {
             "Host": f"{function_name}.{namespace}.example.com"
         }
